@@ -56,7 +56,7 @@ public class StickerMessengerActivity extends AppCompatActivity {
     }
 
     /**
-     * Not Used for Now, Keeping here incase there is a need move thread off main.
+     * Not Used for Now, Keeping here in case that we need to move a process thread off main.
      *
      * @param type
      */
@@ -114,6 +114,7 @@ public class StickerMessengerActivity extends AppCompatActivity {
                     }
                 }
                 break;
+
             case R.id.btn_user_3:
                 if (checked) {
                     user1.setChecked(false);
@@ -127,6 +128,7 @@ public class StickerMessengerActivity extends AppCompatActivity {
                     }
                 }
                 break;
+
             case R.id.btn_user_4:
                 if (checked) {
                     user1.setChecked(false);
@@ -144,7 +146,7 @@ public class StickerMessengerActivity extends AppCompatActivity {
     }
 
     /**
-     * I don't think this needs a transaction as there is not race condition when creating users.
+     * I don't think this needs a transaction as there is not a race condition when creating users.
      *
      * @param postRef
      * @param user
@@ -152,8 +154,9 @@ public class StickerMessengerActivity extends AppCompatActivity {
     private void createUser(DatabaseReference postRef, User user) {
         DatabaseReference postsRef = db.getReference();
         DatabaseReference newPostRef = postsRef.push();
-        postRef.child("users").push().setValue(user);
-        String postID = newPostRef.getKey();
+        DatabaseReference newnewPostRef  = postRef.child("users").push();
+        newnewPostRef.setValue(user);
+        String postID = newnewPostRef.getKey();
         myInstanceId = postID;
         System.out.println(postID);
     }
@@ -176,7 +179,7 @@ public class StickerMessengerActivity extends AppCompatActivity {
                         if (u == null) {
                             return Transaction.success(mutableData);
                         }
-                        mutableData.setValue(user.username);
+                        mutableData.setValue(user);
                         return Transaction.success(mutableData);
                     }
 
