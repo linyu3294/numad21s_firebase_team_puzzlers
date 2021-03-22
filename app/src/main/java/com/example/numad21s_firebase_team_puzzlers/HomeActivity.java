@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -65,6 +67,13 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        findViewById(R.id.sendEmoji).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openUsers();
+            }
+        });
+
     }
 
     @Override
@@ -72,6 +81,15 @@ public class HomeActivity extends AppCompatActivity {
         super.onStop();
 //        System.out.println("My Instance ID   " + myInstanceId);
 //        db.getReference().child("users").child(myInstanceId).setValue(null);
+    }
+
+    /**
+     * To open activity for users list to send to.
+     */
+    public void openUsers() {
+        Intent intent = new Intent(this, ChooseUser.class);
+        //ADD the emoji id to send
+        startActivity(intent);
     }
 
 }
