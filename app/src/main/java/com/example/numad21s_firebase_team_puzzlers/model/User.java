@@ -10,16 +10,22 @@ import java.io.Serializable;
 @IgnoreExtraProperties
 public class User implements Serializable {
     public String username;
+    public String messageToken;
 
     // Don't remove, This is required for
     public User() {
     }
 
-    public User(String username) {
+    public User(String username, String messageToken) {
         this.username = username;
+        this.messageToken = messageToken;
     }
 
     public String getUsername() {
         return username;
+    }
+
+    public String getMessageToken() {
+        return messageToken;
     }
 }
