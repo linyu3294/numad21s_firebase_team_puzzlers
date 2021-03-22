@@ -1,13 +1,44 @@
 package com.example.numad21s_firebase_team_puzzlers.services;
 
+import android.content.Context;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+
+import com.example.numad21s_firebase_team_puzzlers.R;
 import com.example.numad21s_firebase_team_puzzlers.model.User;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class UserService {
-    public static void getAllUsers(FirebaseDatabase db) {
-        // TODO
-        // DatabaseReference userRef = db.getReference("users");
+    public static void bindUsersToLayout(FirebaseDatabase db, Context context, LinearLayout userContainer) {
+        DatabaseReference userRef = db.getReference("users");
+
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
+                    User retrievedUser = messageSnapshot.getValue(User.class);
+
+                    TextView textView = new TextView(context);
+                    textView.setText(retrievedUser.username);
+                    textView.setLayoutParams(new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.MATCH_PARENT
+                    ));
+
+                    userContainer.addView(textView);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
     }
 
     /**

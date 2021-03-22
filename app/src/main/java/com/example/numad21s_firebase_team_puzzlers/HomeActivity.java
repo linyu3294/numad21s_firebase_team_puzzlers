@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.numad21s_firebase_team_puzzlers.model.User;
+import com.example.numad21s_firebase_team_puzzlers.services.UserService;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,7 +27,7 @@ public class HomeActivity extends AppCompatActivity {
     private String myUserName;
     private String myInstanceId;
     private User myUserInstance;
-
+    private LinearLayout userLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,34 +38,12 @@ public class HomeActivity extends AppCompatActivity {
         welcomeMsg = (TextView) findViewById(R.id.txt_welcome);
         myInstanceId = getIntent().getStringExtra("myInstanceId");
         myUserInstance = (User) getIntent().getSerializableExtra("myUserInstance");
+        userLayout = findViewById(R.id.scroll_users_view_layout);
 
         welcomeMsg.setText("Hello, " + myUserName + " !");
         otherUsers = new ArrayList<User>();
 
-        DatabaseReference userRef = db.getReference("users");
-        Context thisActivityContext = this;
-        userRef.addValueEventListener(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
-                    User retrievedUser = messageSnapshot.getValue(User.class);
-                    LinearLayout outerContainer = findViewById(R.id.scroll_users_view_layout);
-                    TextView textView = new TextView(thisActivityContext);
-                    textView.setText(retrievedUser.username);
-                    LinearLayout.LayoutParams innerContainer = new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            LinearLayout.LayoutParams.MATCH_PARENT
-                    );
-                    textView.setLayoutParams(innerContainer);
-                    outerContainer.addView(textView);
-                }
-            }
-            @Override
-            public void onCancelled (@NonNull DatabaseError error){
-            }
-        });
-
+        UserService.bindUsersToLayout(db, this, userLayout);
     }
 
     @Override
