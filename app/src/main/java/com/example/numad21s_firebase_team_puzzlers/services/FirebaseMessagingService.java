@@ -83,7 +83,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
     }
 
     public void postToastMessage(final String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG);
+        Toast.makeText(this, "FINAL: " + message, Toast.LENGTH_LONG);
     }
 
     private void extractPayloadDataForegroundCase(RemoteMessage remoteMessage) {

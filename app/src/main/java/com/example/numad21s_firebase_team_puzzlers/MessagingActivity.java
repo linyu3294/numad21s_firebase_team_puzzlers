@@ -153,15 +153,6 @@ public class MessagingActivity extends AppCompatActivity {
                     // Read FCM response.
                     InputStream inputStream = conn.getInputStream();
                     final String resp = convertStreamToString(inputStream);
-
-//                    Handler h = new Handler(Looper.getMainLooper());
-//                    h.post(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            Log.e(TAG, "run: " + resp);
-//                            Toast.makeText(MessagingActivity.this, resp, Toast.LENGTH_LONG).show();
-//                        }
-//                    });
                 } catch (JSONException | IOException e) {
                     e.printStackTrace();
                 }
