@@ -79,6 +79,7 @@ public class EmojiService {
 //        return outputBitmaps;
 //    }
 
+// example code on how to call getEmojiByID
 
 //        EmojiService.getEmojiByID(FirebaseStorage.getInstance(), 0, new OnSuccessListener<byte[]>() {
 //            @Override
