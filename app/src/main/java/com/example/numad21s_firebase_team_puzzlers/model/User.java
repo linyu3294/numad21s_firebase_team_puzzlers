@@ -8,7 +8,6 @@ import com.google.firebase.database.IgnoreExtraProperties;
 @IgnoreExtraProperties
 public class User {
     public String username;
-    public String id;
 
     // Don't remove, This is required for
     public User(){}
@@ -17,9 +16,5 @@ public class User {
         this.username = username;
     }
 
-    public User(String username, String id){
-        this.username = username;
-        this.id = id;
-    }
 
 }

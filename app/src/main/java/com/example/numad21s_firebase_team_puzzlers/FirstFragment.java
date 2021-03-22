@@ -8,10 +8,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
-
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 
 public class FirstFragment extends Fragment {
@@ -32,14 +28,14 @@ public class FirstFragment extends Fragment {
         view.findViewById(R.id.button_first).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openStickerMessengerActivity();
+                openLoginActivity();
             }
         });
     }
 
 
-    public void openStickerMessengerActivity(){
-        Intent intent = new Intent(FirstFragment.this.getActivity(), StickerMessengerActivity.class);
+    public void openLoginActivity(){
+        Intent intent = new Intent(FirstFragment.this.getActivity(), LoginActivity.class);
         startActivity(intent);
     }
 
