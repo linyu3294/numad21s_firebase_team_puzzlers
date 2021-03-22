@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 
 import com.example.numad21s_firebase_team_puzzlers.R;
 import com.example.numad21s_firebase_team_puzzlers.model.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -46,6 +48,7 @@ public class UserService {
 
     /**
      * Creates & pushes a new user into Firebase.
+     *
      * @return Returns the new Firebase entry ID.
      */
     public static String createNewUser(FirebaseDatabase db, String username) {
