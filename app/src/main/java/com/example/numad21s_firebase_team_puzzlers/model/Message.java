@@ -13,15 +13,27 @@ public class Message implements Serializable {
     public User userTo;
     public int emojiID;
 
-    public Message(){
+    public Message() {
         userFrom = null;
-        userTo  = null;
+        userTo = null;
         emojiID = -1;
     }
 
-    public Message( User userFrom,  User userTo, int emojiID){
+    public Message(User userFrom, User userTo, int emojiID) {
         this.userFrom = userFrom;
         this.userTo = userTo;
         this.emojiID = emojiID;
+    }
+
+    public User getUserFrom() {
+        return userFrom;
+    }
+
+    public User getUserTo() {
+        return userTo;
+    }
+
+    public int getEmojiID() {
+        return emojiID;
     }
 }

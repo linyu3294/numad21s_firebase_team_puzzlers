@@ -48,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
         myUserName = myUserNameView.getText().toString();
 
         // Basic username validation
+        // TODO: check if username exists
         if (myUserName != null && myUserName.length() > 0) {
             myInstanceId = UserService.createNewUser(db, myUserName);
             openHomeActivity();

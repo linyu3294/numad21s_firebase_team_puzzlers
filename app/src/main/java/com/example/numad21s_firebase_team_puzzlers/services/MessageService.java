@@ -7,6 +7,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class MessageService {
     public static void getAllMessagesBetween(FirebaseDatabase db, User user1, User user2) {
+        // TODO: use firebase query, or filter results ourselves
     }
 
     /**
