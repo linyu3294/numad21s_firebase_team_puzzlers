@@ -70,17 +70,19 @@ public class MessagingActivity extends AppCompatActivity {
                     if (msg != null && (msg.userFrom == myUserInstance && msg.userTo == targetUser) ||
                             msg.userFrom == targetUser && msg.userTo == myUserInstance) {
 
-                        // TODO: render emoji
+                        Log.println(Log.DEBUG, TAG, "Reading " + msg.getEmojiID() + " from " + msg.getUserFrom().getUsername() + " to " + msg.getUserTo().getUsername());
+
+                        // TODO: render emoji somehow
 //                        EmojiService.getEmojiByID(msg.getEmojiID());
 
-                        TextView textView = new TextView(getApplicationContext());
-                        textView.setText(msg.emojiID);
-                        textView.setLayoutParams(new LinearLayout.LayoutParams(
+                        Button userBtn = new Button(getApplicationContext());
+                        userBtn.setText(String.valueOf(msg.emojiID));
+                        userBtn.setLayoutParams(new LinearLayout.LayoutParams(
                                 LinearLayout.LayoutParams.MATCH_PARENT,
                                 LinearLayout.LayoutParams.MATCH_PARENT
                         ));
 
-                        msgList.addView(textView);
+                        msgList.addView(userBtn);
                     }
                 }
             }
@@ -151,15 +153,6 @@ public class MessagingActivity extends AppCompatActivity {
                     // Read FCM response.
                     InputStream inputStream = conn.getInputStream();
                     final String resp = convertStreamToString(inputStream);
-
-                    Handler h = new Handler(Looper.getMainLooper());
-                    h.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            Log.e(TAG, "run: " + resp);
-                            Toast.makeText(MessagingActivity.this, resp, Toast.LENGTH_LONG).show();
-                        }
-                    });
                 } catch (JSONException | IOException e) {
                     e.printStackTrace();
                 }
