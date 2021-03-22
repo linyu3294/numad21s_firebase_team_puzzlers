@@ -30,6 +30,7 @@ public class MessageService {
                     // Filter unrelated messages
                     if ((msg.userFrom == user1 && msg.userTo == user2) ||
                             msg.userFrom == user2 && msg.userTo == user1) {
+
                         // TODO: render emoji
                         TextView textView = new TextView(context);
                         textView.setText(msg.emojiID);
