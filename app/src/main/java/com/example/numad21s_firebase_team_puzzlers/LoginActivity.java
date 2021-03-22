@@ -8,8 +8,10 @@ import android.os.Parcelable;
 import android.view.View;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.numad21s_firebase_team_puzzlers.model.User;
+import com.example.numad21s_firebase_team_puzzlers.services.UserService;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,8 +31,6 @@ public class LoginActivity extends AppCompatActivity {
     private User myUserInstance;
     private ScrollView scrollView;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,29 +44,17 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-
     public void onLogInClick(View view) {
         myUserName = myUserNameView.getText().toString();
-        myUserInstance = new User(myUserName);
-        createUser(db.getReference(), new User(myUserName));
-        openHomeActivity();
-    }
 
-    /**
-     * I don't think this needs a transaction as there is not a race condition when creating users.
-     *
-     * @param postRef
-     * @param user
-     */
-    private void createUser(DatabaseReference postRef, User user) {
-        DatabaseReference dbPostsRef = db.getReference();
-        DatabaseReference childPostRef = postRef.child("users").push();
-        childPostRef.setValue(user);
-        String postID = childPostRef.getKey();
-        myInstanceId = postID;
-        System.out.println(postID);
+        // Basic username validation
+        if (myUserName != null && myUserName.length() > 0) {
+            myInstanceId = UserService.createNewUser(db, myUserName);
+            openHomeActivity();
+        } else {
+            Toast.makeText(getApplicationContext(), "Invalid username!", Toast.LENGTH_LONG).show();
+        }
     }
-
 
     /**
      * Update User.
@@ -100,13 +88,11 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
-
-    public void openHomeActivity(){
+    public void openHomeActivity() {
         Intent intent = new Intent(this, HomeActivity.class);
         intent.putExtra("myUserName", myUserName);
         intent.putExtra("myInstanceId", myInstanceId);
-        intent.putExtra("myUserInstance",  myUserInstance);
+        intent.putExtra("myUserInstance", myUserInstance);
         startActivity(intent);
     }
-
 }

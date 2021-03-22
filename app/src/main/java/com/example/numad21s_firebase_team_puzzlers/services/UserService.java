@@ -5,7 +5,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class UserService {
-    public void getAllUsers(FirebaseDatabase db) {
+    public static void getAllUsers(FirebaseDatabase db) {
         // TODO
         // DatabaseReference userRef = db.getReference("users");
     }
@@ -17,7 +17,7 @@ public class UserService {
      * @param username
      * @return Returns the new Firebase entry ID.
      */
-    public String createNewUser(FirebaseDatabase db, String username) {
+    public static String createNewUser(FirebaseDatabase db, String username) {
         DatabaseReference dbRef = db.getReference();
         DatabaseReference newUserRef = dbRef.child("users").push();
 
