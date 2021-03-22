@@ -31,7 +31,7 @@ public class MessageService {
                     Message msg = messageSnapshot.getValue(Message.class);
 
                     // Filter unrelated messages
-                    if ((msg.userFrom == user1 && msg.userTo == user2) ||
+                    if (msg != null && (msg.userFrom == user1 && msg.userTo == user2) ||
                             msg.userFrom == user2 && msg.userTo == user1) {
 
                         // TODO: render emoji

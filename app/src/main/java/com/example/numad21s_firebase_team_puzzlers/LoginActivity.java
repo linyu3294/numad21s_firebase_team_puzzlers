@@ -32,7 +32,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private TextView myUserNameView;
     private String myUserName;
-    private String myInstanceId;
     private User myUserInstance;
     private ScrollView scrollView;
 
@@ -41,7 +40,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         db = FirebaseDatabase.getInstance();
-        myInstanceId = null;
         scrollView = findViewById(R.id.scroll_users_view);
 
         myUserNameView = (TextView) findViewById(R.id.txt_my_user_name);
@@ -53,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // If username is valid
         if (myUserName != null && myUserName.length() > 0) {
-            // Get Messaging userToken, and create user with username & token attached
+            // Get Messaging user token, and create user with username & token attached
             FirebaseMessaging.getInstance().getToken()
                     .addOnCompleteListener(new OnCompleteListener<String>() {
                         @Override
