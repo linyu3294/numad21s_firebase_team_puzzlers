@@ -70,8 +70,8 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        System.out.println("My Instance ID   " + myInstanceId);
-        db.getReference().child("users").child(myInstanceId).setValue(null);
+//        System.out.println("My Instance ID   " + myInstanceId);
+//        db.getReference().child("users").child(myInstanceId).setValue(null);
     }
 
 }
