@@ -6,12 +6,27 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class UserService {
     public void getAllUsers(FirebaseDatabase db) {
-        DatabaseReference userRef = db.getReference("users");
+        // TODO
+        // DatabaseReference userRef = db.getReference("users");
     }
 
-    public void createNewUser(FirebaseDatabase db, String username) {
-        DatabaseReference userRef = db.getReference("users");
-        userRef.get()
+    /**
+     * Creates & pushes a new user into Firebase.
+     *
+     * @param db
+     * @param username
+     * @return Returns the new Firebase entry ID.
+     */
+    public String createNewUser(FirebaseDatabase db, String username) {
+        DatabaseReference dbRef = db.getReference();
+        DatabaseReference newUserRef = dbRef.child("users").push();
 
+        User user = new User(username);
+        newUserRef.setValue(user);
+
+        String postID = newUserRef.getKey();
+        System.out.println("[UserService] Created new user with username: " + username);
+
+        return postID;
     }
 }
