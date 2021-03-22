@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -25,6 +26,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextView myUserNameView;
     private String myUserName;
     private String myInstanceId;
+    private User myUserInstance;
     private ScrollView scrollView;
 
 
@@ -41,14 +43,11 @@ public class LoginActivity extends AppCompatActivity {
         myUserName = myUserNameView.getText().toString();
 
     }
-    @Override
-    protected void onStop() {
-        super.onStop();
-        db.getReference().child("users").onDisconnect().removeValue();
-    }
+
 
     public void onLogInClick(View view) {
         myUserName = myUserNameView.getText().toString();
+        myUserInstance = new User(myUserName);
         createUser(db.getReference(), new User(myUserName));
         openHomeActivity();
     }
@@ -105,6 +104,8 @@ public class LoginActivity extends AppCompatActivity {
     public void openHomeActivity(){
         Intent intent = new Intent(this, HomeActivity.class);
         intent.putExtra("myUserName", myUserName);
+        intent.putExtra("myInstanceId", myInstanceId);
+        intent.putExtra("myUserInstance",  myUserInstance);
         startActivity(intent);
     }
 

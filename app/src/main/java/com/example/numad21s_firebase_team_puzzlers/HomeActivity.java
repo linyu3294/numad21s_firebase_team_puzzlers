@@ -20,9 +20,13 @@ import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
     private FirebaseDatabase db;
-    private String myUserName;
+
     private TextView welcomeMsg;
     private List<User> otherUsers;
+    private String myUserName;
+    private String myInstanceId;
+    private User myUserInstance;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +35,9 @@ public class HomeActivity extends AppCompatActivity {
         db = FirebaseDatabase.getInstance();
         myUserName = getIntent().getStringExtra("myUserName");
         welcomeMsg = (TextView) findViewById(R.id.txt_welcome);
+        myInstanceId = getIntent().getStringExtra("myInstanceId");
+        myUserInstance = (User) getIntent().getSerializableExtra("myUserInstance");
+
         welcomeMsg.setText("Hello, " + myUserName + " !");
         otherUsers = new ArrayList<User>();
 
@@ -58,6 +65,13 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        System.out.println("My Instance ID   " + myInstanceId);
+        db.getReference().child("users").child(myInstanceId).setValue(null);
     }
 
 }
