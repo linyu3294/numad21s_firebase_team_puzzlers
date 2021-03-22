@@ -10,7 +10,6 @@
         android:name="com.example.numad21s_firebase_team_puzzlers.FirstFragment"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_first">
-
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
             app:destination="@id/SecondFragment" />
@@ -20,9 +19,13 @@
         android:name="com.example.numad21s_firebase_team_puzzlers.SecondFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_second">
-
         <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+            android:id="@+id/action_SecondFragment_to_chooseUser"
+            app:destination="@id/chooseUser" />
     </fragment>
+    <activity
+        android:id="@+id/chooseUser"
+        android:name="com.example.numad21s_firebase_team_puzzlers.ChooseUser"
+        android:label="activity_choose_user"
+        tools:layout="@layout/activity_choose_user" />
 </navigation>
