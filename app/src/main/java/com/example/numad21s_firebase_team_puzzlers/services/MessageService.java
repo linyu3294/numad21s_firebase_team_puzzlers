@@ -5,6 +5,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.numad21s_firebase_team_puzzlers.model.Message;
 import com.example.numad21s_firebase_team_puzzlers.model.User;
@@ -13,12 +14,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessagingService;
+import com.google.firebase.messaging.RemoteMessage;
 
 public class MessageService {
     /**
      * Binds message data into the provided messageLayout View.
      */
-    public static void bindMessagesToLayout(FirebaseDatabase db, Context context, LinearLayout msgLayout, User user1, User user2) {
+    public static void bindMessagesToView(FirebaseDatabase db, Context context, RecyclerView recyclerView, User user1, User user2) {
         DatabaseReference msgsRef = db.getReference("messages");
 
         msgsRef.addValueEventListener(new ValueEventListener() {
@@ -39,7 +42,7 @@ public class MessageService {
                                 LinearLayout.LayoutParams.MATCH_PARENT
                         ));
 
-                        msgLayout.addView(textView);
+                        recyclerView.addView(textView);
                     }
                 }
             }
@@ -53,7 +56,7 @@ public class MessageService {
     /**
      * Creates & pushes a new message into Firebase.
      */
-    public static void createNewMessage(FirebaseDatabase db, User userFrom, User userTo, int emojiID) {
+    public static Message createNewMessage(FirebaseDatabase db, User userFrom, User userTo, int emojiID) {
         DatabaseReference dbRef = db.getReference();
         DatabaseReference newMsgRef = dbRef.child("messages").push();
 
@@ -65,5 +68,7 @@ public class MessageService {
                 + newMsg.userFrom.username + " to "
                 + newMsg.userTo.username + " with emojiID:"
                 + newMsg.emojiID);
+
+        return  newMsg;
     }
 }

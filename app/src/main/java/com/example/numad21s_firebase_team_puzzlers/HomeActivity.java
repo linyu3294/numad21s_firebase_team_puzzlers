@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -26,9 +27,6 @@ public class HomeActivity extends AppCompatActivity {
     private FirebaseDatabase db;
 
     private TextView welcomeMsg;
-    private List<User> otherUsers;
-    private String myUserName;
-    private String myInstanceId;
     private User myUserInstance;
     private LinearLayout userLayout;
 
@@ -38,23 +36,21 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         db = FirebaseDatabase.getInstance();
-        myUserName = getIntent().getStringExtra("myUserName");
         welcomeMsg = (TextView) findViewById(R.id.txt_welcome);
-        myInstanceId = getIntent().getStringExtra("myInstanceId");
         myUserInstance = (User) getIntent().getSerializableExtra("myUserInstance");
         userLayout = findViewById(R.id.scroll_users_view_layout);
 
-        welcomeMsg.setText("Hello, " + myUserName + " !");
-        otherUsers = new ArrayList<User>();
+        welcomeMsg.setText("Hello, " + myUserInstance.getUsername() + " !");
 
         UserService.bindUsersToLayout(db, this, userLayout);
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-//        System.out.println("My Instance ID   " + myInstanceId);
-//        db.getReference().child("users").child(myInstanceId).setValue(null);
-    }
+    // Called by clicking on user button (created in UserService)
+    public void StartMessagingUser(User targetUser) {
+        Intent msgIntent = new Intent(this, MessagingActivity.class);
+        msgIntent.putExtra("myUserInstance", myUserInstance);
+        msgIntent.putExtra("targetUser", targetUser);
 
+        startActivity(msgIntent);
+    }
 }

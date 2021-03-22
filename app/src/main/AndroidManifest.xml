@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Numad21s_firebase_team_puzzlers">
-        <activity android:name=".HomeActivity"></activity>
+        <activity android:name=".MessagingActivity"></activity>
+        <activity android:name=".HomeActivity" />
         <activity android:name=".LoginActivity" />
         <activity
             android:name=".MainActivity"
