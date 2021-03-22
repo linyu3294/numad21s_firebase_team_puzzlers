@@ -12,9 +12,6 @@ public class UserService {
 
     /**
      * Creates & pushes a new user into Firebase.
-     *
-     * @param db
-     * @param username
      * @return Returns the new Firebase entry ID.
      */
     public static String createNewUser(FirebaseDatabase db, String username) {
