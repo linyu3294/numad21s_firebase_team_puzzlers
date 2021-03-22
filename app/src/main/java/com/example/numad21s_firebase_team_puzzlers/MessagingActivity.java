@@ -4,11 +4,11 @@ import com.example.numad21s_firebase_team_puzzlers.model.Message;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.Layout;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -44,7 +44,7 @@ public class MessagingActivity extends AppCompatActivity {
 
     private TextView inputText;
     private Button sendMsgBtn;
-    private RecyclerView msgList;
+    private LinearLayout msgList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +56,7 @@ public class MessagingActivity extends AppCompatActivity {
 
         sendMsgBtn = findViewById(R.id.sendMsgButton);
         inputText = findViewById(R.id.messageInput);
-        msgList = findViewById(R.id.messagesList);
+        msgList = findViewById(R.id.msgList);
 
         // Bind messages to UI
         DatabaseReference msgsRef = FirebaseDatabase.getInstance().getReference("messages");
@@ -80,8 +80,7 @@ public class MessagingActivity extends AppCompatActivity {
                                 LinearLayout.LayoutParams.MATCH_PARENT
                         ));
 
-                        // TODO: Add messages to UI view
-//                        recyclerView.addView(textView);
+                        msgList.addView(textView);
                     }
                 }
             }
