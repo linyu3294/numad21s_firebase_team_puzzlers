@@ -33,6 +33,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
         db = FirebaseDatabase.getInstance();
         myUserName = getIntent().getStringExtra("myUserName");
         welcomeMsg = (TextView) findViewById(R.id.txt_welcome);

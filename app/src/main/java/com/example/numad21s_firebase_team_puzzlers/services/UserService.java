@@ -15,7 +15,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class UserService {
-    public static void bindUsersToLayout(FirebaseDatabase db, Context context, LinearLayout userContainer) {
+    /**
+     * Binds user data into the provided userLayout View.
+     */
+    public static void bindUsersToLayout(FirebaseDatabase db, Context context, LinearLayout userLayout) {
         DatabaseReference userRef = db.getReference("users");
 
         userRef.addValueEventListener(new ValueEventListener() {
@@ -31,7 +34,7 @@ public class UserService {
                             LinearLayout.LayoutParams.MATCH_PARENT
                     ));
 
-                    userContainer.addView(textView);
+                    userLayout.addView(textView);
                 }
             }
 
