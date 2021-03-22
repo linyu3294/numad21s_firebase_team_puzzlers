@@ -19,41 +19,6 @@ import com.google.firebase.messaging.RemoteMessage;
 
 public class MessageService {
     /**
-     * Binds message data into the provided messageLayout View.
-     */
-    public static void bindMessagesToView(FirebaseDatabase db, Context context, RecyclerView recyclerView, User user1, User user2) {
-        DatabaseReference msgsRef = db.getReference("messages");
-
-        msgsRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
-                    Message msg = messageSnapshot.getValue(Message.class);
-
-                    // Filter unrelated messages
-                    if (msg != null && (msg.userFrom == user1 && msg.userTo == user2) ||
-                            msg.userFrom == user2 && msg.userTo == user1) {
-
-                        // TODO: render emoji
-                        TextView textView = new TextView(context);
-                        textView.setText(msg.emojiID);
-                        textView.setLayoutParams(new LinearLayout.LayoutParams(
-                                LinearLayout.LayoutParams.MATCH_PARENT,
-                                LinearLayout.LayoutParams.MATCH_PARENT
-                        ));
-
-                        recyclerView.addView(textView);
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
-    }
-
-    /**
      * Creates & pushes a new message into Firebase.
      */
     public static Message createNewMessage(FirebaseDatabase db, User userFrom, User userTo, int emojiID) {

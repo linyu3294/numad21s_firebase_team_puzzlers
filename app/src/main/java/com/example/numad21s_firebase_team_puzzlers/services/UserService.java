@@ -25,43 +25,6 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 public class UserService {
     /**
-     * Binds user data into the provided userLayout View.
-     */
-    public static void bindUsersToLayout(FirebaseDatabase db, HomeActivity homeActivity, LinearLayout userLayout) {
-        DatabaseReference userRef = db.getReference("users");
-
-        userRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
-                    User retrievedUser = messageSnapshot.getValue(User.class);
-
-                    Button userBtn = new Button(homeActivity);
-                    userBtn.setText(retrievedUser.username);
-                    userBtn.setLayoutParams(new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            LinearLayout.LayoutParams.MATCH_PARENT
-                    ));
-
-                    // handle message user button
-                    userBtn.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            homeActivity.StartMessagingUser(retrievedUser);
-                        }
-                    });
-
-                    userLayout.addView(userBtn);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
-    }
-
-    /**
      * Creates & pushes a new user into Firebase.
      *
      * @return Returns the new Firebase entry ID.

@@ -24,7 +24,6 @@ public class FirstFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
         view.findViewById(R.id.button_first).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -33,12 +32,8 @@ public class FirstFragment extends Fragment {
         });
     }
 
-
     public void openLoginActivity(){
-        Intent intent = new Intent(FirstFragment.this.getActivity(), LoginActivity.class);
+        Intent intent = new Intent(this.getContext(), LoginActivity.class);
         startActivity(intent);
     }
-
-
-
 }
