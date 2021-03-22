@@ -2,6 +2,7 @@ package com.example.numad21s_firebase_team_puzzlers;
 
 import com.example.numad21s_firebase_team_puzzlers.model.Message;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -11,12 +12,18 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.numad21s_firebase_team_puzzlers.model.User;
+import com.example.numad21s_firebase_team_puzzlers.services.EmojiService;
 import com.example.numad21s_firebase_team_puzzlers.services.MessageService;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -51,7 +58,38 @@ public class MessagingActivity extends AppCompatActivity {
         inputText = findViewById(R.id.messageInput);
         msgList = findViewById(R.id.messagesList);
 
-        MessageService.bindMessagesToView(FirebaseDatabase.getInstance(), this, msgList, myUserInstance, targetUser);
+        // Bind messages to UI
+        DatabaseReference msgsRef = FirebaseDatabase.getInstance().getReference("messages");
+        msgsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
+                    Message msg = messageSnapshot.getValue(Message.class);
+
+                    // Filter unrelated messages
+                    if (msg != null && (msg.userFrom == myUserInstance && msg.userTo == targetUser) ||
+                            msg.userFrom == targetUser && msg.userTo == myUserInstance) {
+
+                        // TODO: render emoji
+//                        EmojiService.getEmojiByID(msg.getEmojiID());
+
+                        TextView textView = new TextView(getApplicationContext());
+                        textView.setText(msg.emojiID);
+                        textView.setLayoutParams(new LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.MATCH_PARENT
+                        ));
+
+                        // TODO: Add messages to UI view
+//                        recyclerView.addView(textView);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
     }
 
     /**

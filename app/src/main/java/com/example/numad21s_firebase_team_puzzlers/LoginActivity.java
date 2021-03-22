@@ -79,36 +79,3 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 }
-
-//    /**
-//     * Update User.
-//     * This Method is NOT in USE. For reference only.
-//     * Uses transaction to avoid simultaneous updates.
-//     *
-//     * @param postRef
-//     * @param user
-//     */
-//    private void updateUser(DatabaseReference postRef, User user) {
-//        System.out.println(myInstanceId);
-//        postRef
-//                .child("users")
-//                .child(myInstanceId)
-//                .runTransaction(new Transaction.Handler() {
-//                    @Override
-//                    public Transaction.Result doTransaction(MutableData mutableData) {
-//                        User u = mutableData.getValue(User.class);
-//                        if (u == null) {
-//                            return Transaction.success(mutableData);
-//                        }
-//                        mutableData.setValue(user);
-//                        return Transaction.success(mutableData);
-//                    }
-//
-//                    @Override
-//                    public void onComplete(DatabaseError databaseError, boolean b,
-//                                           DataSnapshot dataSnapshot) {
-//                        // Transaction completed
-//                    }
-//                });
-//    }
-
