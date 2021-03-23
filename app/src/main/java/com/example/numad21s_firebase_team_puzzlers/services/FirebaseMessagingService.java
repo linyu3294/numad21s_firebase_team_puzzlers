@@ -14,10 +14,10 @@ import androidx.core.app.NotificationCompat;
 import com.example.numad21s_firebase_team_puzzlers.R;
 import com.google.firebase.messaging.RemoteMessage;
 
+// TODO: This code came from the professor, but I cleaned it up a bit. We need to get notifications working
 public class FirebaseMessagingService extends com.google.firebase.messaging.FirebaseMessagingService {
     private static final String TAG = FirebaseMessagingService.class.getSimpleName();
 
-    // TODO: what are these, how to use them?
     private static final String CHANNEL_ID = "CHANNEL_ID";
     private static final String CHANNEL_NAME = "CHANNEL_NAME";
     private static final String CHANNEL_DESCRIPTION = "CHANNEL_DESCRIPTION";
