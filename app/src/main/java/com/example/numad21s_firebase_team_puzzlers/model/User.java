@@ -1,8 +1,13 @@
 package com.example.numad21s_firebase_team_puzzlers.model;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Created by aniru on 2/18/2017.
@@ -32,5 +37,10 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return username;
+    }
+
+    public boolean EqualsTo(User other)
+    {
+        return username.equals(other.getUsername());
     }
 }
