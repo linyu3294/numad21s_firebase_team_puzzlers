@@ -16,6 +16,7 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -44,33 +45,23 @@ public class ChooseUser extends AppCompatActivity {
         // Bind users with UI elements
         adapter = new ArrayAdapter<User>(this, android.R.layout.simple_list_item_1, users);
         chooseListView.setAdapter(adapter);
-        FirebaseDatabase.getInstance().getReference().child("users").addChildEventListener(new ChildEventListener() {
+        FirebaseDatabase.getInstance().getReference("users").addValueEventListener(new ValueEventListener() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
-                User user = dataSnapshot.getValue(User.class);
-                if (user == null)
-                    return;
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot messageSnapshot : snapshot.getChildren()) {
+                    User user = messageSnapshot.getValue(User.class);
+                    if (user == null)
+                        return;
 
-                users.add(user);
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String prevChildKey) {
+                    users.add(user);
+                    adapter.notifyDataSetChanged();
+                }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-            }
 
+            }
         });
     }
 
