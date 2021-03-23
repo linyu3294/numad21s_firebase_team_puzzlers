@@ -33,4 +33,9 @@ public class Message implements Serializable {
     public int getEmojiID() {
         return emojiID;
     }
+
+    @Override
+    public String toString() {
+        return String.valueOf(emojiID);
+    }
 }

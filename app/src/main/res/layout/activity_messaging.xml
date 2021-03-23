@@ -6,27 +6,28 @@
     android:layout_height="match_parent"
     tools:context=".MessagingActivity">
 
-    <LinearLayout
-        android:id="@+id/msgList"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="vertical"
+    <ListView
+        android:id="@+id/MsgListView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/messageInput"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="spread_inside"></LinearLayout>
+        app:layout_constraintVertical_chainStyle="spread_inside" />
 
     <EditText
         android:id="@+id/messageInput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="emoji ID"
         app:layout_constraintBottom_toTopOf="@+id/sendMsgButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/msgList" />
+        app:layout_constraintTop_toBottomOf="@+id/MsgListView" />
 
     <Button
         android:id="@+id/sendMsgButton"
@@ -34,9 +35,8 @@
         android:layout_height="wrap_content"
         android:onClick="sendMessage"
         android:text="Send"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/MsgListView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/messageInput" />
 </androidx.constraintlayout.widget.ConstraintLayout>
