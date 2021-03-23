@@ -19,11 +19,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 public class LoginActivity extends AppCompatActivity {
-    private FirebaseDatabase db;
-
     private TextView usernameTextView;
     private User currentUser;
     private ScrollView scrollView;
+
+    private FirebaseDatabase db;
     private FirebaseMessaging fm;
 
     @Override
@@ -35,6 +35,7 @@ public class LoginActivity extends AppCompatActivity {
         scrollView = findViewById(R.id.scroll_users_view);
         usernameTextView = findViewById(R.id.txt_my_user_name);
 
+        // Cache Firebase singleton instances
         db = FirebaseDatabase.getInstance();
         fm = FirebaseMessaging.getInstance();
     }
@@ -74,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void openHomeActivity() {
         Intent intent = new Intent(this, HomeActivity.class);
-        intent.putExtra("myUserInstance", currentUser);
+        intent.putExtra("currentUser", currentUser);
         startActivity(intent);
     }
 }
