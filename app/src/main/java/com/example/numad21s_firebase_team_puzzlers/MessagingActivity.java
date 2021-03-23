@@ -98,11 +98,13 @@ public class MessagingActivity extends AppCompatActivity {
      */
     public void sendMessage(View type) {
         try {
-            Message newMsg = MessageService.createNewMessage(FirebaseDatabase.getInstance(), currentUser, targetUser, Integer.parseInt(inputText.getText().toString()));
+            // TODO: Get from UI image
+            int emojiID = Integer.parseInt(inputText.getText().toString());
+
+            Message newMsg = MessageService.createNewMessage(FirebaseDatabase.getInstance(), currentUser, targetUser, emojiID);
 
             // TODO: get notifications to work
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
