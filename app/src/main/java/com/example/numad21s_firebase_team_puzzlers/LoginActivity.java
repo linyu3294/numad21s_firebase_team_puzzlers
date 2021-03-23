@@ -46,10 +46,12 @@ public class LoginActivity extends AppCompatActivity {
         String username = usernameTextView.getText().toString();
 
         // Validate our username text input
-        if (!UserService.usernameIsValid(db, username)) {
+        if (username == null || username.length() > 0) {
             Toast.makeText(getApplicationContext(), "Invalid username!", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        // TODO: check if username exists
 
         // Fetch unique realtime messenger token
         fm.getToken().addOnCompleteListener(task -> {
