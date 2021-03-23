@@ -30,25 +30,3 @@ public class EmojiService {
                 .addOnFailureListener(onFail);
     }
 }
-
-// example code on how to call getEmojiByID
-
-//        EmojiService.getEmojiByID(FirebaseStorage.getInstance(), 0, new OnSuccessListener<byte[]>() {
-//            @Override
-//            public void onSuccess(byte[] bytes) {
-//                Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-//
-//                ImageView img = findViewById(R.id.testImg);
-//                img.setMinimumHeight(bm.getHeight());
-//                img.setMinimumWidth(bm.getWidth());
-//                img.setImageBitmap(bm);
-//
-//                System.out.println("[Emoji Output] " + bm.getHeight());
-//            }
-//        }, new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception e) {
-//                System.out.println("[EmojiService] Could not retrieve emoji!");
-//                e.printStackTrace();
-//            }
-//        });

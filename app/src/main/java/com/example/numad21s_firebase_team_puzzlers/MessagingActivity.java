@@ -87,7 +87,6 @@ public class MessagingActivity extends AppCompatActivity {
 
             }
         });
-
     }
 
     /**
@@ -168,38 +167,3 @@ public class MessagingActivity extends AppCompatActivity {
     }
 }
 
-
-
-//
-//        // TODO: this is placeholder, we need to improve the UI rendering of messages list
-//        // Bind message data into a list of UI elements
-//        db.getReference("messages").addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
-//                    Message msg = messageSnapshot.getValue(Message.class);
-//                    if (msg == null)
-//                        return;
-//
-//                    // Skip messages that are not between current & target user
-//                    if ((msg.userFrom != currentUser || msg.userTo != targetUser) &&
-//                            (msg.userFrom != targetUser || msg.userTo != currentUser))
-//                        return;
-//
-//                    // TODO: Use EmojiService.getEmojiByID(msg.getEmojiID()) to get image instead of emojiID
-//
-//                    Button userBtn = new Button(getApplicationContext());
-//                    userBtn.setText(String.valueOf(msg.emojiID));
-//                    userBtn.setLayoutParams(new LinearLayout.LayoutParams(
-//                            LinearLayout.LayoutParams.MATCH_PARENT,
-//                            LinearLayout.LayoutParams.MATCH_PARENT
-//                    ));
-//
-//                    msgList.addView(userBtn);
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//            }
-//        });

@@ -19,7 +19,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class PickUserToMsgActivity extends AppCompatActivity {
-
     private ListView chooseListView;
     private ArrayList<User> users = new ArrayList();
     private ArrayAdapter<User> adapter;
@@ -46,6 +45,8 @@ public class PickUserToMsgActivity extends AppCompatActivity {
         FirebaseDatabase.getInstance().getReference("users").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                users.clear();
+
                 for (DataSnapshot messageSnapshot : snapshot.getChildren()) {
                     User user = messageSnapshot.getValue(User.class);
                     if (user == null)
