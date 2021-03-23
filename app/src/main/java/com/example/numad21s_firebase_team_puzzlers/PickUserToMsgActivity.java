@@ -50,7 +50,7 @@ public class PickUserToMsgActivity extends AppCompatActivity {
                 for (DataSnapshot messageSnapshot : snapshot.getChildren()) {
                     User user = messageSnapshot.getValue(User.class);
                     if (user == null)
-                        return;
+                        continue;
 
                     users.add(user);
                     adapter.notifyDataSetChanged();

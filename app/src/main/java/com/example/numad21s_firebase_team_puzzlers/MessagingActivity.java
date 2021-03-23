@@ -43,7 +43,6 @@ public class MessagingActivity extends AppCompatActivity {
     private User currentUser;
     private User targetUser;
 
-    private FirebaseDatabase db;
     private ArrayAdapter<Message> adapter;
 
     @Override
@@ -62,12 +61,10 @@ public class MessagingActivity extends AppCompatActivity {
         // TODO: Get emoji ID from UI images instead of input text
         inputText = findViewById(R.id.messageInput);
 
-        db = FirebaseDatabase.getInstance();
-
         // Bind msgs with UI elements
         adapter = new ArrayAdapter<Message>(this, android.R.layout.simple_list_item_1, messages);
         msgListView.setAdapter(adapter);
-        db.getReference("messages").addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference("messages").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 messages.clear();
@@ -75,16 +72,23 @@ public class MessagingActivity extends AppCompatActivity {
                 for (DataSnapshot messageSnapshot : snapshot.getChildren()) {
                     Message msg = messageSnapshot.getValue(Message.class);
                     if (msg == null)
-                        return;
+                        continue;
 
-                    messages.add(msg);
-                    adapter.notifyDataSetChanged();
+                    // Skip unrelated messages
+                    if ((msg.getUserFrom().EqualsTo(targetUser) && msg.getUserTo().EqualsTo(currentUser))
+                            || (msg.getUserFrom().EqualsTo(currentUser) && msg.getUserTo().EqualsTo(targetUser))) {
+                        messages.add(msg);
+                        adapter.notifyDataSetChanged();
+                        Log.d(TAG, "added");
+
+                    } else {
+                        Log.d(TAG, "skip");
+                    }
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
     }
@@ -93,77 +97,16 @@ public class MessagingActivity extends AppCompatActivity {
      * Button onClick handler.
      */
     public void sendMessage(View type) {
-        int emojiID = 0;
-
-        // Attempt to parse emojiID
         try {
-            // TODO: Get emojiID from image instead of input text
-            emojiID = Integer.parseInt(inputText.getText().toString());
+            // TODO: Get from UI image
+            int emojiID = Integer.parseInt(inputText.getText().toString());
+
+            Message newMsg = MessageService.createNewMessage(FirebaseDatabase.getInstance(), currentUser, targetUser, emojiID);
+
+            // TODO: get notifications to work
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        int finalEmojiID = emojiID;
-
-        // Get msg token from target user
-        String targetToken = targetUser.getMessageToken();
-
-        // Send msg on new thread
-        new Thread(() -> {
-            // Save msg in database
-            Message newMsg = MessageService.createNewMessage(FirebaseDatabase.getInstance(), currentUser, targetUser, finalEmojiID);
-
-            JSONObject jNotification = new JSONObject();
-            JSONObject jdata = new JSONObject();
-            JSONObject jPayload = new JSONObject();
-            try {
-                // TODO: (criteria) we need more than text
-                jNotification.put("title", "New message");
-                jNotification.put("body", "Emoji msg");
-                jNotification.put("sound", "default");
-                jNotification.put("badge", "1");
-
-                jdata.put("title", "Message");
-                jdata.put("data", newMsg);
-
-                jPayload.put("to", targetToken);
-                jPayload.put("priority", "high");
-                jPayload.put("notification", jNotification);
-                jPayload.put("data", jdata);
-
-                URL url = new URL("https://fcm.googleapis.com/fcm/send");
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestMethod("POST");
-                conn.setRequestProperty("Authorization", SERVER_KEY);
-                conn.setRequestProperty("Content-Type", "application/json");
-                conn.setDoOutput(true);
-
-                // Send FCM message content.
-                OutputStream outputStream = conn.getOutputStream();
-                outputStream.write(jPayload.toString().getBytes());
-                outputStream.close();
-
-                Log.d(TAG, "Sending " + String.valueOf(newMsg.getEmojiID()) + " from " + currentUser.getUsername() + " to " + targetUser.getUsername());
-
-                // Read FCM response.
-                InputStream inputStream = conn.getInputStream();
-                final String resp = convertStreamToString(inputStream);
-                Log.d(TAG, resp);
-            } catch (JSONException | IOException e) {
-                e.printStackTrace();
-            }
-        }).start();
-    }
-
-    /**
-     * Helper function
-     *
-     * @param is
-     * @return
-     */
-    private String convertStreamToString(InputStream is) {
-        Scanner s = new Scanner(is).useDelimiter("\\A");
-        return s.hasNext() ? s.next().replace(",", ",\n") : "";
     }
 }
 
