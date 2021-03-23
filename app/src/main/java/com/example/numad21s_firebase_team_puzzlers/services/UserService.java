@@ -40,4 +40,10 @@ public class UserService {
 
         return user;
     }
+
+    // TODO: check if username is unique
+    public static boolean usernameIsValid(FirebaseDatabase db, String username)
+    {
+        return username != null && username.length() > 0 ;
+    }
 }

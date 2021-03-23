@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.View;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -16,66 +15,66 @@ import com.example.numad21s_firebase_team_puzzlers.services.UserService;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.MutableData;
-import com.google.firebase.database.Transaction;
 import com.google.firebase.messaging.FirebaseMessaging;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
     private FirebaseDatabase db;
 
-    private TextView myUserNameView;
-    private String myUserName;
-    private User myUserInstance;
+    private TextView usernameTextView;
+    private User currentUser;
     private ScrollView scrollView;
+    private FirebaseMessaging fm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        db = FirebaseDatabase.getInstance();
-        scrollView = findViewById(R.id.scroll_users_view);
 
-        myUserNameView = (TextView) findViewById(R.id.txt_my_user_name);
-        myUserName = myUserNameView.getText().toString();
+        // Cache UI elements
+        scrollView = findViewById(R.id.scroll_users_view);
+        usernameTextView = findViewById(R.id.txt_my_user_name);
+
+        db = FirebaseDatabase.getInstance();
+        fm = FirebaseMessaging.getInstance();
     }
 
-    public void onLogInClick(View view) {
-        myUserName = myUserNameView.getText().toString();
 
-        // If username is valid
-        if (myUserName != null && myUserName.length() > 0) {
-            // Get Messaging user token, and create user with username & token attached
-            FirebaseMessaging.getInstance().getToken()
-                    .addOnCompleteListener(new OnCompleteListener<String>() {
-                        @Override
-                        public void onComplete(@NonNull Task<String> task) {
-                            // Update myUserInstance
-                            myUserInstance = UserService.createNewUser(db, myUserName, task.getResult());
-                            openHomeActivity();
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            e.printStackTrace();
-                        }
-                    });
+    /**
+     * Button onClick handler.
+     *
+     * @param view
+     */
+    public void loginUser(View view) {
+        // Get username from text input
+        String username = usernameTextView.getText().toString();
 
-        } else {
-            Toast.makeText(getApplicationContext(), "Invalid username!", Toast.LENGTH_LONG).show();
+        // Validate our username text input
+        if (!UserService.usernameIsValid(db, username)) {
+            Toast.makeText(getApplicationContext(), "Invalid username!", Toast.LENGTH_SHORT).show();
+            return;
         }
+
+        // Fetch unique realtime messenger token
+        fm.getToken().addOnCompleteListener(task -> {
+            // Handle error
+            if (!task.isSuccessful()) {
+                task.getException().printStackTrace();
+                return;
+            }
+
+            String token = task.getResult();
+
+            // Create new user with token
+            currentUser = UserService.createNewUser(db, username, token);
+
+            openHomeActivity();
+        });
     }
 
     public void openHomeActivity() {
         Intent intent = new Intent(this, HomeActivity.class);
-        intent.putExtra("myUserInstance", myUserInstance);
+        intent.putExtra("myUserInstance", currentUser);
         startActivity(intent);
     }
 }
