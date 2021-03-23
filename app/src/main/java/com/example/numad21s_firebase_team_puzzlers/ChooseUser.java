@@ -36,14 +36,14 @@ public class ChooseUser extends AppCompatActivity {
         // Cache UI elements
         chooseListView = findViewById(R.id.UserListView);
 
-        // Bind list items with StartMessenger(...)
+        // Hook list items onClick with StartMessenger(...)
         chooseListView.setOnItemClickListener((AdapterView<?> parent, View view, int position, long id) -> {
             StartMessenger(users.get(position));
         });
 
+        // Bind users with UI elements
         adapter = new ArrayAdapter<User>(this, android.R.layout.simple_list_item_1, users);
         chooseListView.setAdapter(adapter);
-
         FirebaseDatabase.getInstance().getReference().child("users").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
