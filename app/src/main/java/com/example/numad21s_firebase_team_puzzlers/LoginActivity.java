@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
         String username = usernameTextView.getText().toString();
 
         // Validate our username text input
-        if (username == null || username.length() > 0) {
+        if (username == null || username.length() == 0) {
             Toast.makeText(getApplicationContext(), "Invalid username!", Toast.LENGTH_SHORT).show();
             return;
         }
