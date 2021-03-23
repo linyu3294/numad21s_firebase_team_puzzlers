@@ -62,7 +62,10 @@ public class MessagingActivity extends AppCompatActivity {
         // TODO: Get emoji ID from UI images instead of input text
         inputText = findViewById(R.id.messageInput);
 
-        l = new ValueEventListener() {
+        // Bind msgs with UI elements
+        adapter = new ArrayAdapter<Message>(this, android.R.layout.simple_list_item_1, messages);
+        msgListView.setAdapter(adapter);
+        FirebaseDatabase.getInstance().getReference("messages").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 messages.clear();
@@ -88,25 +91,8 @@ public class MessagingActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
-        };
-
-        // Bind msgs with UI elements
-        adapter = new ArrayAdapter<Message>(this, android.R.layout.simple_list_item_1, messages);
-        msgListView.setAdapter(adapter);
-        FirebaseDatabase.getInstance().getReference("messages").addValueEventListener(l);
+        });
     }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        messages.clear();
-        adapter.notifyDataSetChanged();
-
-        FirebaseDatabase.getInstance().getReference("messages").removeEventListener(l);
-        FirebaseDatabase.getInstance().getReference("messages").addValueEventListener(l);
-    }
-
 
     /**
      * Button onClick handler.
