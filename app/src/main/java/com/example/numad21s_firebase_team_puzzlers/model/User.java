@@ -28,4 +28,9 @@ public class User implements Serializable {
     public String getMessageToken() {
         return messageToken;
     }
+
+    @Override
+    public String toString() {
+        return username;
+    }
 }

@@ -40,7 +40,6 @@ public class LoginActivity extends AppCompatActivity {
         fm = FirebaseMessaging.getInstance();
     }
 
-
     /**
      * Button onClick handler.
      *
@@ -74,8 +73,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void openHomeActivity() {
-        Intent intent = new Intent(this, HomeActivity.class);
+//        Intent intent = new Intent(this, HomeActivity.class);
+
+        Intent intent = new Intent(this, ChooseUser.class);
         intent.putExtra("currentUser", currentUser);
+
         startActivity(intent);
     }
 }
