@@ -97,67 +97,74 @@ public class MessagingActivity extends AppCompatActivity {
      * Button onClick handler.
      */
     public void sendMessage(View type) {
-        // Get msg token from target user
-        final String targetToken = targetUser.getMessageToken();
+        try {
+            // TODO: Get emoji ID from UI images instead of input text
+            final int emojiID = Integer.parseInt(inputText.getText().toString());
 
-        // Get emoji ID from input text
-        final int emojiID = Integer.parseInt(inputText.getText().toString());
+            // Get msg token from target user
+            final String targetToken = targetUser.getMessageToken();
 
-        Log.println(Log.DEBUG, TAG, "Sending " + String.valueOf(emojiID) + " from " + myUserInstance.getUsername() + " to " + targetUser.getUsername());
+            // Send msg on new thread
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    // Save msg in database
+                    Message newMsg = MessageService.createNewMessage(FirebaseDatabase.getInstance(), myUserInstance, targetUser, emojiID);
 
-        // Send msg on new thread
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                // Save msg in database
-                Message newMsg = MessageService.createNewMessage(FirebaseDatabase.getInstance(), myUserInstance, targetUser, emojiID);
+                    JSONObject jNotification = new JSONObject();
+                    JSONObject jdata = new JSONObject();
+                    JSONObject jPayload = new JSONObject();
+                    try {
+                        jNotification.put("title", "New message");
+                        jNotification.put("body", "Emoji msg"); //TODO: we need more than text
+                        jNotification.put("sound", "default");
+                        jNotification.put("badge", "1");
 
-                JSONObject jNotification = new JSONObject();
-                JSONObject jdata = new JSONObject();
-                JSONObject jPayload = new JSONObject();
-                try {
-                    jNotification.put("title", "New message");
-                    jNotification.put("body", "Emoji msg"); //TODO: we need more than text
-                    jNotification.put("sound", "default");
-                    jNotification.put("badge", "1");
+                        jdata.put("title", "Test Message");
+                        jdata.put("msg", newMsg);
 
-                    jdata.put("title", "Test Message");
-                    jdata.put("msg", newMsg);
-
-                    /***
-                     * The Notification object is now populated.
-                     * Next, build the Payload that we send to the server.
-                     */
-                    jPayload.put("to", targetToken); // CLIENT_REGISTRATION_TOKEN);
-                    jPayload.put("priority", "high");
-                    jPayload.put("notification", jNotification);
-                    jPayload.put("data", jdata);
+                        /***
+                         * The Notification object is now populated.
+                         * Next, build the Payload that we send to the server.
+                         */
+                        jPayload.put("to", targetToken); // CLIENT_REGISTRATION_TOKEN);
+                        jPayload.put("priority", "high");
+                        jPayload.put("notification", jNotification);
+                        jPayload.put("data", jdata);
 
 
-                    /***
-                     * The Payload object is now populated.
-                     * Send it to Firebase to send the message to the appropriate recipient.
-                     */
-                    URL url = new URL("https://fcm.googleapis.com/fcm/send");
-                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                    conn.setRequestMethod("POST");
-                    conn.setRequestProperty("Authorization", SERVER_KEY);
-                    conn.setRequestProperty("Content-Type", "application/json");
-                    conn.setDoOutput(true);
+                        /***
+                         * The Payload object is now populated.
+                         * Send it to Firebase to send the message to the appropriate recipient.
+                         */
+                        URL url = new URL("https://fcm.googleapis.com/fcm/send");
+                        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                        conn.setRequestMethod("POST");
+                        conn.setRequestProperty("Authorization", SERVER_KEY);
+                        conn.setRequestProperty("Content-Type", "application/json");
+                        conn.setDoOutput(true);
 
-                    // Send FCM message content.
-                    OutputStream outputStream = conn.getOutputStream();
-                    outputStream.write(jPayload.toString().getBytes());
-                    outputStream.close();
+                        // Send FCM message content.
+                        OutputStream outputStream = conn.getOutputStream();
+                        outputStream.write(jPayload.toString().getBytes());
+                        outputStream.close();
 
-                    // Read FCM response.
-                    InputStream inputStream = conn.getInputStream();
-                    final String resp = convertStreamToString(inputStream);
-                } catch (JSONException | IOException e) {
-                    e.printStackTrace();
+                        Log.d(TAG, "Sending " + String.valueOf(newMsg.getEmojiID()) + " from " + myUserInstance.getUsername() + " to " + targetUser.getUsername());
+
+                        // Read FCM response.
+                        InputStream inputStream = conn.getInputStream();
+                        final String resp = convertStreamToString(inputStream);
+                        Log.d(TAG, resp);
+                    } catch (JSONException | IOException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-        }).start();
+            }).start();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+
     }
 
     /**
