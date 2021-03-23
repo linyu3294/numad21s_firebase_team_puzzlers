@@ -1,6 +1,5 @@
 package com.example.numad21s_firebase_team_puzzlers;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -12,9 +11,6 @@ import android.widget.Toast;
 
 import com.example.numad21s_firebase_team_puzzlers.model.User;
 import com.example.numad21s_firebase_team_puzzlers.services.UserService;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -68,16 +64,13 @@ public class LoginActivity extends AppCompatActivity {
             // Create new user with token
             currentUser = UserService.createNewUser(db, username, token);
 
-            openHomeActivity();
+            startPickUserToMsgActivity();
         });
     }
 
-    public void openHomeActivity() {
-//        Intent intent = new Intent(this, HomeActivity.class);
-
-        Intent intent = new Intent(this, ChooseUser.class);
+    public void startPickUserToMsgActivity() {
+        Intent intent = new Intent(this, PickUserToMsgActivity.class);
         intent.putExtra("currentUser", currentUser);
-
         startActivity(intent);
     }
 }

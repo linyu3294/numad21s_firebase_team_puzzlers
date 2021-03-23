@@ -8,15 +8,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.numad21s_firebase_team_puzzlers.model.User;
 import com.example.numad21s_firebase_team_puzzlers.services.MessageService;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
@@ -28,6 +28,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class MessagingActivity extends AppCompatActivity {
@@ -36,11 +37,14 @@ public class MessagingActivity extends AppCompatActivity {
 
     private TextView inputText;
     private Button sendMsgBtn;
-    private LinearLayout msgList;
+    private ListView msgListView;
+    private ArrayList<Message> messages = new ArrayList();
 
     private User currentUser;
     private User targetUser;
+
     private FirebaseDatabase db;
+    private ArrayAdapter<Message> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,45 +57,37 @@ public class MessagingActivity extends AppCompatActivity {
 
         // Cache UI elements
         sendMsgBtn = findViewById(R.id.sendMsgButton);
-        msgList = findViewById(R.id.msgList);
+        msgListView = findViewById(R.id.MsgListView);
 
         // TODO: Get emoji ID from UI images instead of input text
         inputText = findViewById(R.id.messageInput);
 
         db = FirebaseDatabase.getInstance();
 
-        // TODO: this is placeholder, we need to improve the UI rendering of messages list
-        // Bind message data into a list of UI elements
+        // Bind msgs with UI elements
+        adapter = new ArrayAdapter<Message>(this, android.R.layout.simple_list_item_1, messages);
+        msgListView.setAdapter(adapter);
         db.getReference("messages").addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                messages.clear();
+
+                for (DataSnapshot messageSnapshot : snapshot.getChildren()) {
                     Message msg = messageSnapshot.getValue(Message.class);
                     if (msg == null)
                         return;
 
-                    // Skip messages that are not between current & target user
-                    if ((msg.userFrom != currentUser || msg.userTo != targetUser) &&
-                            (msg.userFrom != targetUser || msg.userTo != currentUser))
-                        return;
-
-                    // TODO: Use EmojiService.getEmojiByID(msg.getEmojiID()) to get image instead of emojiID
-
-                    Button userBtn = new Button(getApplicationContext());
-                    userBtn.setText(String.valueOf(msg.emojiID));
-                    userBtn.setLayoutParams(new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            LinearLayout.LayoutParams.MATCH_PARENT
-                    ));
-
-                    msgList.addView(userBtn);
+                    messages.add(msg);
+                    adapter.notifyDataSetChanged();
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
+
     }
 
     /**
@@ -171,3 +167,39 @@ public class MessagingActivity extends AppCompatActivity {
         return s.hasNext() ? s.next().replace(",", ",\n") : "";
     }
 }
+
+
+
+//
+//        // TODO: this is placeholder, we need to improve the UI rendering of messages list
+//        // Bind message data into a list of UI elements
+//        db.getReference("messages").addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
+//                    Message msg = messageSnapshot.getValue(Message.class);
+//                    if (msg == null)
+//                        return;
+//
+//                    // Skip messages that are not between current & target user
+//                    if ((msg.userFrom != currentUser || msg.userTo != targetUser) &&
+//                            (msg.userFrom != targetUser || msg.userTo != currentUser))
+//                        return;
+//
+//                    // TODO: Use EmojiService.getEmojiByID(msg.getEmojiID()) to get image instead of emojiID
+//
+//                    Button userBtn = new Button(getApplicationContext());
+//                    userBtn.setText(String.valueOf(msg.emojiID));
+//                    userBtn.setLayoutParams(new LinearLayout.LayoutParams(
+//                            LinearLayout.LayoutParams.MATCH_PARENT,
+//                            LinearLayout.LayoutParams.MATCH_PARENT
+//                    ));
+//
+//                    msgList.addView(userBtn);
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//            }
+//        });

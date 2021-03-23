@@ -6,13 +6,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.example.numad21s_firebase_team_puzzlers.model.User;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -20,7 +18,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class ChooseUser extends AppCompatActivity {
+public class PickUserToMsgActivity extends AppCompatActivity {
 
     private ListView chooseListView;
     private ArrayList<User> users = new ArrayList();
@@ -30,12 +28,12 @@ public class ChooseUser extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_choose_user);
+        setContentView(R.layout.activity_pick_user_msg);
 
         currentUser = (User) getIntent().getSerializableExtra("currentUser");
 
         // Cache UI elements
-        chooseListView = findViewById(R.id.UserListView);
+        chooseListView = findViewById(R.id.MsgListView);
 
         // Hook list items onClick with StartMessenger(...)
         chooseListView.setOnItemClickListener((AdapterView<?> parent, View view, int position, long id) -> {

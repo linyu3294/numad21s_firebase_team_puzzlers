@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ChooseUser">
+    tools:context=".PickUserToMsgActivity">
 
     <TextView
         android:id="@+id/userListTextView"
@@ -14,7 +14,7 @@
         android:text="TextView" />
 
     <ListView
-        android:id="@+id/UserListView"
+        android:id="@+id/MsgListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>

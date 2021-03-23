@@ -7,7 +7,7 @@
 
     <activity
         android:id="@+id/chooseUser"
-        android:name="com.example.numad21s_firebase_team_puzzlers.ChooseUser"
+        android:name="com.example.numad21s_firebase_team_puzzlers.PickUserToMsgActivity"
         android:label="activity_choose_user"
-        tools:layout="@layout/activity_choose_user" />
+        tools:layout="@layout/activity_pick_user_msg" />
 </navigation>
